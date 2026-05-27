@@ -60,7 +60,63 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .stat-item{background:var(--surface);padding:28px 32px;text-align:center}
 .stat-num{font-family:'Syne',sans-serif;font-size:40px;font-weight:800;letter-spacing:-2px;color:var(--accent);display:block;margin-bottom:4px}
 .stat-label{font-size:13px;color:var(--muted);line-height:1.4}
+/* WHY CASH FLO */
+.why-section {
+  padding: 70px 40px;
+  border-bottom: 0.5px solid var(--border);
+  background: linear-gradient(180deg, var(--bg), var(--surface));
+  text-align: center;
+}
 
+.why-section h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(30px, 4vw, 54px);
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  margin-bottom: 14px;
+}
+
+.why-section > p {
+  color: var(--muted2);
+  max-width: 620px;
+  margin: 0 auto 36px;
+  font-size: 16px;
+}
+
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  max-width: 1050px;
+  margin: 0 auto;
+}
+
+.why-card {
+  background: var(--surface);
+  border: 0.5px solid var(--border2);
+  border-radius: 18px;
+  padding: 28px;
+  text-align: left;
+}
+
+.why-card h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: var(--accent);
+}
+
+.why-card p {
+  color: var(--muted2);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.disclaimer {
+  margin-top: 30px !important;
+  font-size: 13px !important;
+  color: var(--muted) !important;
+}
 /* STOCKS SECTION */
 .stocks-section{padding:60px 40px;border-bottom:0.5px solid var(--border)}
 .stocks-top{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:28px;flex-wrap:wrap;gap:16px}
@@ -275,7 +331,33 @@ footer p{font-size:12px;color:var(--muted)}
   <div class="stat-item"><span class="stat-num">-18%</span><span class="stat-label">Real value lost keeping cash 5 years</span></div>
   <div class="stat-item"><span class="stat-num">$5</span><span class="stat-label">Per month after your free trial</span></div>
 </div>
+<!-- WHY CASH FLO -->
+<section class="why-section">
+  <div class="section-tag">Why Cash Flo?</div>
+  <h2>Better than guessing from random videos.</h2>
+  <p>Cash Flo helps beginners understand investing without hype, confusion, or hours of searching.</p>
 
+  <div class="why-grid">
+    <div class="why-card">
+      <h3>No hype</h3>
+      <p>We explain the good, the bad, and the risk instead of pushing “buy now” advice.</p>
+    </div>
+
+    <div class="why-card">
+      <h3>Made for beginners</h3>
+      <p>Ask simple questions and get normal answers about stocks, ETFs, and investing terms.</p>
+    </div>
+
+    <div class="why-card">
+      <h3>Everything in one place</h3>
+      <p>Stock rankings, filters, AI explanations, and weekly ideas without jumping between YouTube, TikTok, Reddit, and Google.</p>
+    </div>
+  </div>
+
+  <p class="disclaimer">
+    Educational only. Not financial advice. Cash Flo does not guarantee returns or tell you exactly what to buy.
+  </p>
+</section>
 <!-- STOCKS -->
 <section id="stocks" class="stocks-section">
   <div class="stocks-top">
