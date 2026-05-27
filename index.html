@@ -448,7 +448,27 @@ footer p{font-size:12px;color:var(--muted)}
       </div>
       <div class="input-row" id="inputRow">
         <input class="adv-input" id="advisorInput" placeholder="Ask about any stock or concept..." />
-        <button class="send-btn" id="sendBtn" onclick="sendQ(async function sendQ() {
+        <button class="send-btn" id="sendBtn" onclick="sendQ(async function sendQ(function getCashFloAnswer(question) {
+  const q = question.toLowerCase();
+
+  if (q.includes('nvda') || q.includes('nvidia')) {
+    return "NVDA is a major AI and chip company, so it can be exciting, but it is also risky because the price can move a lot. A beginner should understand the company, valuation, and risk before buying. Educational only — not financial advice.";
+  }
+
+  if (q.includes('p/e') || q.includes('pe ratio')) {
+    return "A P/E ratio means price-to-earnings ratio. It shows how expensive a stock is compared to how much profit the company makes. A high P/E can mean investors expect big growth, but it can also mean the stock is overpriced.";
+  }
+
+  if (q.includes('etf')) {
+    return "An ETF is a basket of many stocks in one investment. For beginners, broad market ETFs like VOO, SPY, or VTI are popular because they spread risk across many companies instead of betting on just one stock.";
+  }
+
+  if (q.includes('$100') || q.includes('100')) {
+    return "With $100, a beginner could start by learning the basics, using a brokerage that allows fractional shares, and considering broad ETFs instead of risky single-stock bets. The goal should be learning and consistency, not trying to get rich fast.";
+  }
+
+  return "Good question. Cash Flo is meant to explain investing in simple language, without hype. A smart beginner should look at the company, risk, long-term potential, and never invest money they cannot afford to lose. Educational only — not financial advice.";
+}) {
   const input = document.getElementById('advisorInput');
   const q = input.value.trim();
   if (!q) return;
