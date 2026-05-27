@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cash Flo — Smart Investing for Everyone</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0a0a0f; --surface:#12121a; --surface2:#1a1a26;
+  --border:rgba(255,255,255,0.08); --border2:rgba(255,255,255,0.16);
+  --accent:#00e5a0; --accent2:#7c6dfa; --text:#f0f0f5;
+  --muted:#7a7a96; --muted2:#a0a0bc; --red:#ff4d6a; --green:#00e5a0; --amber:#f7c35f;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:999;opacity:0.4}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 40px;background:rgba(10,10,15,0.9);backdrop-filter:blur(20px);border-bottom:0.5px solid var(--border)}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:20px;letter-spacing:-.5px;cursor:pointer;display:flex;align-items:center;gap:6px}
+.logo-icon{width:30px;height:30px;background:var(--accent);color:#000;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;flex-shrink:0}
+.logo span{color:var(--accent)}
+.nav-right{display:flex;align-items:center;gap:16px}
+.nav-plan{font-size:13px;padding:6px 14px;border-radius:8px;border:0.5px solid var(--border2);color:var(--muted2);cursor:pointer;background:transparent;font-family:'DM Sans',sans-serif;transition:all .2s}
+.nav-plan:hover{color:var(--text);border-color:rgba(255,255,255,0.3)}
+.nav-cta{background:var(--accent);color:#000;font-weight:600;font-size:13px;padding:8px 18px;border-radius:8px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:opacity .2s}
+.nav-cta:hover{opacity:.85}
+.premium-badge{background:linear-gradient(135deg,#f7c35f,#ff6b35);color:#000;font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;letter-spacing:.5px}
+
+/* TICKER */
+.ticker-wrap{overflow:hidden;border-bottom:0.5px solid var(--border);background:var(--surface);padding:9px 0;margin-top:57px}
+.ticker-inner{display:flex;gap:40px;animation:ticker 25s linear infinite;white-space:nowrap;width:max-content}
+.ticker-item{font-size:13px;font-family:'Syne',sans-serif;font-weight:600;display:flex;gap:7px}
+.ticker-sym{color:var(--muted2)}
+.up{color:var(--green)} .down{color:var(--red)}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* HERO */
+.hero{padding:70px 40px 60px;position:relative;overflow:hidden;border-bottom:0.5px solid var(--border)}
+.hero-glow{position:absolute;top:-150px;right:-100px;width:600px;height:600px;background:radial-gradient(circle,rgba(0,229,160,0.07) 0%,transparent 70%);pointer-events:none}
+.hero-inner{max-width:780px}
+.hero-label{display:inline-flex;align-items:center;gap:7px;background:rgba(0,229,160,0.1);border:0.5px solid rgba(0,229,160,0.3);color:var(--accent);font-size:12px;font-weight:600;padding:5px 12px;border-radius:100px;margin-bottom:22px}
+.hero-label::before{content:'●';font-size:7px;animation:blink 1.5s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(38px,6vw,72px);font-weight:800;line-height:1.0;letter-spacing:-2px;margin-bottom:18px}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero p{font-size:17px;color:var(--muted2);max-width:480px;margin-bottom:32px;font-weight:300;line-height:1.65}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.btn-primary{background:var(--accent);color:#000;font-weight:600;font-size:14px;padding:13px 26px;border-radius:10px;border:none;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
+.btn-primary:hover{opacity:.85;transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--text);font-size:14px;padding:13px 26px;border-radius:10px;border:0.5px solid var(--border2);cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
+.btn-ghost:hover{border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.04)}
+.free-note{font-size:13px;color:var(--muted);margin-top:10px}
+.free-note strong{color:var(--accent)}
+
+/* STATS */
+.stat-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-bottom:0.5px solid var(--border)}
+.stat-item{background:var(--surface);padding:28px 32px;text-align:center}
+.stat-num{font-family:'Syne',sans-serif;font-size:40px;font-weight:800;letter-spacing:-2px;color:var(--accent);display:block;margin-bottom:4px}
+.stat-label{font-size:13px;color:var(--muted);line-height:1.4}
+
+/* STOCKS SECTION */
+.stocks-section{padding:60px 40px;border-bottom:0.5px solid var(--border)}
+.stocks-top{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:28px;flex-wrap:wrap;gap:16px}
+.stocks-title{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;letter-spacing:-1px}
+.stocks-controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+
+/* DROPDOWN */
+.dropdown-wrap{position:relative}
+.dropdown-btn{display:flex;align-items:center;gap:8px;background:var(--surface);border:0.5px solid var(--border2);color:var(--text);font-size:13px;font-family:'DM Sans',sans-serif;padding:8px 14px;border-radius:9px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.dropdown-btn:hover{border-color:rgba(255,255,255,.3)}
+.dropdown-btn svg{transition:transform .2s}
+.dropdown-btn.open svg{transform:rotate(180deg)}
+.dropdown-menu{position:absolute;top:calc(100% + 6px);right:0;background:var(--surface);border:0.5px solid var(--border2);border-radius:12px;padding:6px;min-width:200px;z-index:50;display:none;box-shadow:0 16px 40px rgba(0,0,0,.4)}
+.dropdown-menu.show{display:block}
+.dropdown-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:7px;cursor:pointer;font-size:13px;color:var(--muted2);transition:all .2s;white-space:nowrap}
+.dropdown-item:hover{background:var(--surface2);color:var(--text)}
+.dropdown-item.active{background:rgba(0,229,160,.1);color:var(--accent)}
+.dropdown-item .lock-icon{margin-left:auto;font-size:11px;color:var(--amber)}
+
+/* STOCK TABLE */
+.stock-table-wrap{overflow:hidden;border:0.5px solid var(--border);border-radius:14px}
+.stock-table{width:100%;border-collapse:collapse}
+.stock-table th{background:var(--surface);padding:11px 16px;text-align:left;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);border-bottom:0.5px solid var(--border)}
+.stock-table th:not(:first-child){text-align:right}
+.stock-row{border-bottom:0.5px solid var(--border);transition:background .15s;cursor:pointer}
+.stock-row:last-child{border-bottom:none}
+.stock-row:hover{background:rgba(255,255,255,.02)}
+.stock-row td{padding:13px 16px;font-size:14px;vertical-align:middle}
+.stock-row td:not(:first-child){text-align:right}
+.stock-info{display:flex;align-items:center;gap:12px}
+.s-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;font-family:'Syne',sans-serif;flex-shrink:0}
+.s-ticker{font-family:'Syne',sans-serif;font-size:14px;font-weight:700}
+.s-name{font-size:12px;color:var(--muted)}
+.s-price{font-family:'Syne',sans-serif;font-weight:700}
+.s-badge{font-size:10px;font-weight:700;padding:3px 7px;border-radius:4px;letter-spacing:.4px}
+.badge-buy{background:rgba(0,229,160,.15);color:var(--green)}
+.badge-hold{background:rgba(247,195,95,.12);color:var(--amber)}
+.badge-watch{background:rgba(124,109,250,.12);color:var(--accent2)}
+
+/* BLUR LOCK */
+.locked-row td{filter:blur(5px);pointer-events:none;user-select:none}
+.lock-overlay-row td{padding:0}
+.lock-overlay-cell{padding:0!important}
+.lock-banner{display:flex;align-items:center;justify-content:center;gap:14px;padding:18px;background:rgba(10,10,15,.7);backdrop-filter:blur(4px);border-top:0.5px solid var(--border)}
+.lock-banner p{font-size:14px;color:var(--muted2)}
+.lock-banner strong{color:var(--text)}
+.unlock-btn{background:var(--amber);color:#000;font-weight:700;font-size:12px;padding:7px 16px;border-radius:7px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:opacity .2s}
+.unlock-btn:hover{opacity:.85}
+
+/* ADVISOR */
+.advisor-section{padding:60px 40px;background:var(--surface);border-bottom:0.5px solid var(--border)}
+.advisor-inner{max-width:760px;margin:0 auto}
+.section-tag{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+.advisor-box{background:var(--bg);border:0.5px solid var(--border2);border-radius:18px;overflow:hidden;margin-top:32px}
+.advisor-head{padding:20px 28px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;gap:12px}
+.advisor-head-icon{width:38px;height:38px;background:rgba(0,229,160,.12);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.advisor-head h3{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:2px}
+.advisor-head p{font-size:12px;color:var(--muted)}
+.live-dot{margin-left:auto;display:flex;align-items:center;gap:5px;font-size:12px;color:var(--accent);font-weight:600}
+.live-dot::before{content:'●';font-size:7px;animation:blink 1.5s infinite}
+.chat-area{min-height:240px;max-height:380px;overflow-y:auto;padding:20px 28px;display:flex;flex-direction:column;gap:14px}
+.chat-area::-webkit-scrollbar{width:3px}
+.chat-area::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.msg{display:flex;gap:10px;align-items:flex-start;animation:fadeUp .3s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.msg-av{width:28px;height:28px;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.msg-av.ai{background:rgba(0,229,160,.15);color:var(--accent)}
+.msg-av.user{background:rgba(124,109,250,.15);color:var(--accent2)}
+.msg-bub{background:var(--surface2);border-radius:4px 12px 12px 12px;padding:11px 15px;font-size:14px;line-height:1.6;max-width:640px}
+.msg.user-msg{flex-direction:row-reverse}
+.user-msg .msg-bub{background:rgba(124,109,250,.15);border-radius:12px 4px 12px 12px}
+.pills-row{display:flex;gap:7px;flex-wrap:wrap;padding:14px 28px;border-top:0.5px solid var(--border)}
+.pill{background:transparent;border:0.5px solid var(--border2);color:var(--muted2);font-size:12px;font-family:'DM Sans',sans-serif;padding:5px 12px;border-radius:100px;cursor:pointer;transition:all .2s}
+.pill:hover{border-color:var(--accent);color:var(--accent)}
+.input-row{display:flex;gap:9px;padding:16px 28px;border-top:0.5px solid var(--border)}
+.adv-input{flex:1;background:var(--surface);border:0.5px solid var(--border2);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;padding:10px 16px;border-radius:9px;outline:none;transition:border-color .2s}
+.adv-input::placeholder{color:var(--muted)}
+.adv-input:focus{border-color:rgba(0,229,160,.4)}
+.send-btn{background:var(--accent);color:#000;border:none;padding:10px 18px;border-radius:9px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:opacity .2s}
+.send-btn:hover{opacity:.85}
+.send-btn:disabled{opacity:.4;cursor:not-allowed}
+
+/* ADVISOR LOCK */
+.advisor-lock-banner{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 28px;background:rgba(247,195,95,.06);border-top:1px solid rgba(247,195,95,.2)}
+.advisor-lock-banner p{font-size:13px;color:var(--muted2)}
+.advisor-lock-banner strong{color:var(--amber)}
+
+/* PRICING */
+.pricing-section{padding:70px 40px;border-bottom:0.5px solid var(--border)}
+.pricing-inner{max-width:820px;margin:0 auto;text-align:center}
+.pricing-title{font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,46px);font-weight:800;letter-spacing:-1.5px;margin-bottom:12px}
+.pricing-sub{font-size:16px;color:var(--muted2);margin-bottom:48px;font-weight:300}
+.pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:680px;margin:0 auto}
+.price-card{background:var(--surface);border:0.5px solid var(--border);border-radius:18px;padding:32px 28px;text-align:left;position:relative}
+.price-card.featured{border:1.5px solid var(--accent);background:rgba(0,229,160,.04)}
+.price-tag{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+.price-tag.green{color:var(--accent)}
+.price-num{font-family:'Syne',sans-serif;font-size:48px;font-weight:800;letter-spacing:-2px;margin-bottom:4px}
+.price-num span{font-size:18px;font-weight:400;color:var(--muted);letter-spacing:0}
+.price-sub{font-size:13px;color:var(--muted);margin-bottom:24px}
+.price-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+.price-features li{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--muted2)}
+.price-features li::before{content:'✓';color:var(--accent);font-weight:700;flex-shrink:0}
+.price-features li.no{color:var(--muted)}
+.price-features li.no::before{content:'✗';color:var(--muted)}
+.price-btn{width:100%;padding:13px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;border:none}
+.price-btn.free{background:var(--surface2);color:var(--text);border:0.5px solid var(--border2)}
+.price-btn.free:hover{border-color:rgba(255,255,255,.3)}
+.price-btn.pro{background:var(--accent);color:#000}
+.price-btn.pro:hover{opacity:.85}
+.popular-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;font-size:11px;font-weight:800;padding:4px 14px;border-radius:100px;letter-spacing:.5px;white-space:nowrap}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;align-items:center;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal{background:var(--surface);border:0.5px solid var(--border2);border-radius:20px;padding:36px;max-width:420px;width:90%;position:relative;animation:modalIn .25s ease}
+@keyframes modalIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+.modal-close{position:absolute;top:16px;right:16px;background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:20px;line-height:1;font-family:'DM Sans',sans-serif}
+.modal h2{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;letter-spacing:-1px;margin-bottom:8px}
+.modal p{font-size:14px;color:var(--muted2);margin-bottom:24px;line-height:1.6}
+.modal-features{display:flex;flex-direction:column;gap:8px;margin-bottom:28px}
+.modal-feat{display:flex;align-items:center;gap:10px;font-size:14px}
+.modal-feat::before{content:'✓';color:var(--accent);font-weight:700}
+.modal-trial-note{text-align:center;font-size:13px;color:var(--muted);margin-top:12px}
+.modal-trial-note strong{color:var(--accent)}
+
+/* FOOTER */
+footer{padding:32px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+footer p{font-size:12px;color:var(--muted)}
+
+/* SPIN */
+.spin{width:14px;height:14px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="upgradeModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div style="font-size:28px;margin-bottom:12px">🔓</div>
+    <h2>Unlock Cash Flo Pro</h2>
+    <p>First month free, then just <strong style="color:var(--accent)">$5/month</strong>. Cancel anytime.</p>
+    <div class="modal-features">
+      <div class="modal-feat">Full live stock screener with all filters</div>
+      <div class="modal-feat">AI Advisor — unlimited questions</div>
+      <div class="modal-feat">Top 50 stocks ranked by any metric</div>
+      <div class="modal-feat">Weekly curated picks with analysis</div>
+      <div class="modal-feat">Portfolio tracker & alerts</div>
+    </div>
+    <button class="btn-primary" style="width:100%;font-size:15px;padding:14px" onclick="activatePro()">Start Free Month →</button>
+    <p class="modal-trial-note"><strong>30 days free.</strong> No card charged until trial ends.</p>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo"><div class="logo-icon">$</div><span>Cash Flo</span></div>
+  <div class="nav-right">
+    <span id="planIndicator" style="font-size:13px;color:var(--muted)">Free Plan</span>
+    <button class="nav-plan" onclick="openModal()">Upgrade to Pro</button>
+    <button class="nav-cta" onclick="openModal()">Try Free →</button>
+  </div>
+</nav>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-inner">
+    <span class="ticker-item"><span class="ticker-sym">AAPL</span><span class="up">$213.42 +1.8%</span></span>
+    <span class="ticker-item"><span class="ticker-sym">NVDA</span><span class="up">$891.20 +3.2%</span></span>
+    <span class="ticker-item"><span class="ticker-sym">MSFT</span><span class="up">$412.60 +0.9%</span></span>
+    <span class="ticker-item"><span class="ticker-sym">TSLA</span><span class="down">$248.10 -1.1%</span></span>
+    <span class="ticker-item"><span class="ticker-sym">AMZN</span><span class="up">$188.55 +2.1%</span></span>
+    <span class="ticker-item"><span class="ticker-sym">GOOGL</span><span class="up">$172.30 +0.7%</span></span>
+    <span class="ticker-item"><span class="ticker-sym">META</span><span class="up">$521.80 +1.4%</span></span>
+    <span class="ticker-item"><span class="ticker-sym">AMD</span><span class="up">$162.40 +4.8%</span></span>
+    <span class="ticker-item"><span class="ticker-sym">VOO</span><span class="up">$498.20 +0.6%</span></span>
+    <span class="ticker-item"><span class="ticker-sym">SPY</span><span class="up">$519.40 +0.5%</span></span>
+    <span class="ticker-item"><span class="ticker-sym">AAPL</span><span class="up">$213.42 +1.8%</span></span>
+    <span class="ticker-item"><span class="ticker-sym">NVDA</span><span class="up">$891.20 +3.2%</span></span>
+    <span class="ticker-item"><span class="ticker-sym">MSFT</span><span class="up">$412.60 +0.9%</span></span>
+    <span class="ticker-item"><span class="ticker-sym">TSLA</span><span class="down">$248.10 -1.1%</span></span>
+    <span class="ticker-item"><span class="ticker-sym">AMZN</span><span class="up">$188.55 +2.1%</span></span>
+    <span class="ticker-item"><span class="ticker-sym">GOOGL</span><span class="up">$172.30 +0.7%</span></span>
+    <span class="ticker-item"><span class="ticker-sym">META</span><span class="up">$521.80 +1.4%</span></span>
+    <span class="ticker-item"><span class="ticker-sym">AMD</span><span class="up">$162.40 +4.8%</span></span>
+    <span class="ticker-item"><span class="ticker-sym">VOO</span><span class="up">$498.20 +0.6%</span></span>
+    <span class="ticker-item"><span class="ticker-sym">SPY</span><span class="up">$519.40 +0.5%</span></span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="hero-label">AI-Powered · Updated Weekly</div>
+    <h1>Investing,<br><em>finally simple.</em></h1>
+    <p>Live stock rankings, AI-powered advice, and weekly picks — all in one place. No experience needed.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="openModal()">Start Free — 1 Month on Us →</button>
+      <button class="btn-ghost" onclick="document.getElementById('stocks').scrollIntoView({behavior:'smooth'})">See Live Stocks</button>
+    </div>
+    <p class="free-note"><strong>First month free.</strong> Then $5/mo. Cancel anytime.</p>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stat-strip">
+  <div class="stat-item"><span class="stat-num">10.7%</span><span class="stat-label">S&P 500 avg annual return</span></div>
+  <div class="stat-item"><span class="stat-num">$1.4M</span><span class="stat-label">$300/mo invested at 20 by retirement</span></div>
+  <div class="stat-item"><span class="stat-num">-18%</span><span class="stat-label">Real value lost keeping cash 5 years</span></div>
+  <div class="stat-item"><span class="stat-num">$5</span><span class="stat-label">Per month after your free trial</span></div>
+</div>
+
+<!-- STOCKS -->
+<section id="stocks" class="stocks-section">
+  <div class="stocks-top">
+    <div class="stocks-title">Live Stock Tracker</div>
+    <div class="stocks-controls">
+      <!-- SORT DROPDOWN -->
+      <div class="dropdown-wrap" id="sortWrap">
+        <button class="dropdown-btn" id="sortBtn" onclick="toggleDropdown('sort')">
+          <span id="sortLabel">⭐ Top Picks</span>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <div class="dropdown-menu" id="sortMenu">
+          <div class="dropdown-item active" onclick="setSort('top','⭐ Top Picks')">⭐ Top Picks</div>
+          <div class="dropdown-item" onclick="setSort('week','📈 Best This Week')">📈 Best This Week</div>
+          <div class="dropdown-item" onclick="setSort('month','🗓 Best This Month')">🗓 Best This Month</div>
+          <div class="dropdown-item" onclick="setSort('longterm','🏆 Best Long-Term')">🏆 Best Long-Term</div>
+          <div class="dropdown-item" onclick="setSort('etf','🛡 ETFs Only')">🛡 ETFs Only</div>
+          <div class="dropdown-item" onclick="setSort('movers','🚀 Biggest Movers')" id="sort-movers">🚀 Biggest Movers <span class="lock-icon">🔒 Pro</span></div>
+          <div class="dropdown-item" onclick="setSort('undervalued','💎 Undervalued')" id="sort-undervalued">💎 Undervalued <span class="lock-icon">🔒 Pro</span></div>
+          <div class="dropdown-item" onclick="setSort('dividend','💰 Dividend Stocks')" id="sort-dividend">💰 Dividend Stocks <span class="lock-icon">🔒 Pro</span></div>
+        </div>
+      </div>
+      <!-- SECTOR DROPDOWN -->
+      <div class="dropdown-wrap" id="sectorWrap">
+        <button class="dropdown-btn" id="sectorBtn" onclick="toggleDropdown('sector')">
+          <span id="sectorLabel">All Sectors</span>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <div class="dropdown-menu" id="sectorMenu">
+          <div class="dropdown-item active" onclick="setSector('all','All Sectors')">All Sectors</div>
+          <div class="dropdown-item" onclick="setSector('tech','💻 Tech')">💻 Tech</div>
+          <div class="dropdown-item" onclick="setSector('etf','🛡 ETFs')">🛡 ETFs</div>
+          <div class="dropdown-item" onclick="setSector('consumer','🛍 Consumer')">🛍 Consumer</div>
+          <div class="dropdown-item" onclick="setSector('energy','⚡ Energy')">⚡ Energy</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stock-table-wrap">
+    <table class="stock-table">
+      <thead>
+        <tr>
+          <th>Stock</th>
+          <th>Price</th>
+          <th>Today</th>
+          <th>1 Week</th>
+          <th>1 Month</th>
+          <th>Rating</th>
+        </tr>
+      </thead>
+      <tbody id="stockBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- AI ADVISOR -->
+<section class="advisor-section" id="advisor">
+  <div class="advisor-inner">
+    <div class="section-tag">AI Advisor</div>
+    <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;letter-spacing:-1px;margin-bottom:8px">Ask anything about stocks</div>
+    <p style="font-size:15px;color:var(--muted2);font-weight:300">Plain-English answers about any stock, strategy, or concept.</p>
+
+    <div class="advisor-box">
+      <div class="advisor-head">
+        <div class="advisor-head-icon">📊</div>
+        <div>
+          <h3>Cash Flo AI</h3>
+          <p>Powered by Claude · Educational only · Not financial advice</p>
+        </div>
+        <div class="live-dot">LIVE</div>
+      </div>
+      <div class="chat-area" id="chatArea">
+        <div class="msg">
+          <div class="msg-av ai">CF</div>
+          <div class="msg-bub">Hey! Ask me about any stock, what a term means, or where to start investing. I'll give you a real, complete answer.</div>
+        </div>
+      </div>
+      <div class="pills-row" id="pillsRow">
+        <button class="pill" onclick="askPill(this)">Is NVDA still a buy?</button>
+        <button class="pill" onclick="askPill(this)">What is a P/E ratio?</button>
+        <button class="pill" onclick="askPill(this)">Best ETF for beginners?</button>
+        <button class="pill" onclick="askPill(this)">How do I start with $100?</button>
+      </div>
+      <div id="advisorLock" class="advisor-lock-banner" style="display:none">
+        <p>🔒 <strong>Free plan:</strong> 3 questions used. Upgrade for unlimited AI advice.</p>
+        <button class="unlock-btn" onclick="openModal()">Unlock Unlimited →</button>
+      </div>
+      <div class="input-row" id="inputRow">
+        <input class="adv-input" id="advisorInput" placeholder="Ask about any stock or concept..." />
+        <button class="send-btn" id="sendBtn" onclick="sendQ()">Ask →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section">
+  <div class="pricing-inner">
+    <div class="section-tag" style="text-align:center">Pricing</div>
+    <div class="pricing-title">Start free. Stay for $5.</div>
+    <p class="pricing-sub">First month on us — no credit card needed to start.</p>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-tag">Free</div>
+        <div class="price-num">$0<span>/mo</span></div>
+        <div class="price-sub">Always free, no card needed</div>
+        <ul class="price-features">
+          <li>Top 10 stocks (basic view)</li>
+          <li>3 AI Advisor questions/day</li>
+          <li>Live ticker tape</li>
+          <li class="no">Advanced filters & sorts</li>
+          <li class="no">Full stock screener (50+)</li>
+          <li class="no">Weekly curated picks</li>
+          <li class="no">Portfolio tracker</li>
+        </ul>
+        <button class="price-btn free">Current Plan</button>
+      </div>
+      <div class="price-card featured">
+        <div class="popular-badge">🔥 MOST POPULAR</div>
+        <div class="price-tag green">Pro</div>
+        <div class="price-num">$5<span>/mo</span></div>
+        <div class="price-sub" style="color:var(--accent)">First month completely free</div>
+        <ul class="price-features">
+          <li>Everything in Free</li>
+          <li>Full screener — 50+ stocks</li>
+          <li>All sort & filter options</li>
+          <li>Unlimited AI Advisor</li>
+          <li>Weekly curated picks</li>
+          <li>Biggest movers, undervalued, dividends</li>
+          <li>Portfolio tracker & alerts</li>
+        </ul>
+        <button class="price-btn pro" onclick="openModal()">Start Free Month →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo"><div class="logo-icon">$</div><span>Cash Flo</span></div>
+  <p>© 2026 Cash Flo · For educational purposes only · Not financial advice · Past performance ≠ future results</p>
+</footer>
+
+<script>
+// STATE
+let isPro = false;
+let questionsUsed = 0;
+const FREE_Q_LIMIT = 3;
+let currentSort = 'top';
+let currentSector = 'all';
+
+// ALL STOCKS DATA
+const stocks = [
+  {ticker:'NVDA',name:'Nvidia',price:891.20,day:3.2,week:8.1,month:18.4,rating:'BUY',sector:'tech',color:'#76c442',filters:['top','week','month','movers'],icon:'N'},
+  {ticker:'AMD',name:'Adv. Micro Devices',price:162.40,day:4.8,week:9.2,month:22.1,rating:'BUY',sector:'tech',color:'#ed1c24',filters:['week','month','movers'],icon:'A'},
+  {ticker:'AAPL',name:'Apple Inc',price:213.42,day:1.8,week:3.1,month:6.4,rating:'BUY',sector:'tech',color:'#999',filters:['top','week','longterm'],icon:'A'},
+  {ticker:'MSFT',name:'Microsoft',price:412.60,day:0.9,week:2.4,month:5.8,rating:'BUY',sector:'tech',color:'#00a2ed',filters:['top','longterm'],icon:'M'},
+  {ticker:'AMZN',name:'Amazon',price:188.55,day:2.1,week:4.3,month:9.7,rating:'BUY',sector:'consumer',color:'#ff9900',filters:['week','month','longterm'],icon:'A'},
+  {ticker:'META',name:'Meta Platforms',price:521.80,day:1.4,week:3.8,month:11.2,rating:'BUY',sector:'tech',color:'#1877f2',filters:['week','month'],icon:'M'},
+  {ticker:'GOOGL',name:'Alphabet',price:172.30,day:0.7,week:1.9,month:4.6,rating:'HOLD',sector:'tech',color:'#4285f4',filters:['longterm','top'],icon:'G'},
+  {ticker:'TSLA',name:'Tesla',price:248.10,day:-1.1,week:-2.3,month:4.1,rating:'WATCH',sector:'consumer',color:'#cc0000',filters:['month','movers'],icon:'T'},
+  {ticker:'VOO',name:'Vanguard S&P 500',price:498.20,day:0.6,week:1.4,month:3.2,rating:'BUY',sector:'etf',color:'#7c6dfa',filters:['top','etf','longterm'],icon:'V'},
+  {ticker:'QQQ',name:'Invesco QQQ',price:447.60,day:1.1,week:2.8,month:6.1,rating:'BUY',sector:'etf',color:'#00e5a0',filters:['etf','week'],icon:'Q'},
+  {ticker:'VTI',name:'Vanguard Total Mkt',price:244.80,day:0.5,week:1.2,month:2.9,rating:'BUY',sector:'etf',color:'#f7c35f',filters:['etf','longterm'],icon:'V'},
+  {ticker:'SPY',name:'SPDR S&P 500',price:519.40,day:0.5,week:1.3,month:3.0,rating:'BUY',sector:'etf',color:'#aaa',filters:['etf','top','longterm'],icon:'S'},
+  // Pro-only stocks (shown blurred)
+  {ticker:'ENPH',name:'Enphase Energy',price:98.40,day:5.2,week:11.8,month:28.3,rating:'BUY',sector:'energy',color:'#f7c35f',filters:['movers','undervalued','week'],icon:'E',proOnly:true},
+  {ticker:'PLTR',name:'Palantir Tech',price:24.80,day:6.1,week:14.2,month:31.5,rating:'BUY',sector:'tech',color:'#00e5a0',filters:['movers','week','month'],icon:'P',proOnly:true},
+  {ticker:'O',name:'Realty Income',price:57.20,day:-0.2,week:0.8,month:2.1,rating:'BUY',sector:'etf',color:'#7c6dfa',filters:['dividend','longterm'],icon:'O',proOnly:true},
+  {ticker:'JNJ',name:'Johnson & Johnson',price:152.30,day:0.3,week:1.1,month:2.8,rating:'HOLD',sector:'consumer',color:'#cc0000',filters:['dividend','longterm'],icon:'J',proOnly:true},
+];
+
+function getFiltered() {
+  return stocks.filter(s => {
+    const sortMatch = s.filters.includes(currentSort);
+    const sectorMatch = currentSector === 'all' || s.sector === currentSector;
+    return sortMatch && sectorMatch;
+  });
+}
+
+function renderStocks() {
+  const filtered = getFiltered();
+  const freeStocks = filtered.filter(s => !s.proOnly);
+  const proStocks = filtered.filter(s => s.proOnly);
+  const body = document.getElementById('stockBody');
+  let html = '';
+
+  const toShow = isPro ? filtered : freeStocks;
+  toShow.forEach(s => {
+    const dayClass = s.day >= 0 ? 'up' : 'down';
+    const dayStr = (s.day >= 0 ? '+' : '') + s.day.toFixed(1) + '%';
+    const wkStr = (s.week >= 0 ? '+' : '') + s.week.toFixed(1) + '%';
+    const moStr = (s.month >= 0 ? '+' : '') + s.month.toFixed(1) + '%';
+    const badgeClass = s.rating === 'BUY' ? 'badge-buy' : s.rating === 'HOLD' ? 'badge-hold' : 'badge-watch';
+    html += `<tr class="stock-row">
+      <td><div class="stock-info"><div class="s-icon" style="background:${s.color}22;color:${s.color}">${s.icon}</div><div><div class="s-ticker">${s.ticker}</div><div class="s-name">${s.name}</div></div></div></td>
+      <td class="s-price">$${s.price.toFixed(2)}</td>
+      <td class="${dayClass}" style="font-weight:600">${dayStr}</td>
+      <td class="${s.week>=0?'up':'down'}">${wkStr}</td>
+      <td class="${s.month>=0?'up':'down'}">${moStr}</td>
+      <td><span class="s-badge ${badgeClass}">${s.rating}</span></td>
+    </tr>`;
+  });
+
+  // Show blurred pro rows if not pro
+  if (!isPro && proStocks.length > 0) {
+    proStocks.forEach(s => {
+      html += `<tr class="stock-row locked-row">
+        <td><div class="stock-info"><div class="s-icon" style="background:#333;color:#666">${s.icon}</div><div><div class="s-ticker">????</div><div class="s-name">Pro Only</div></div></div></td>
+        <td>$???.??</td><td>+?.?%</td><td>+??.?%</td><td>+??.?%</td><td><span class="s-badge badge-buy">BUY</span></td>
+      </tr>`;
+    });
+    html += `<tr><td colspan="6" class="lock-overlay-cell">
+      <div class="lock-banner">
+        <p>🔒 <strong>${proStocks.length} more stocks</strong> unlocked with Pro — including biggest movers & dividend picks</p>
+        <button class="unlock-btn" onclick="openModal()">Unlock Pro — First Month Free →</button>
+      </div>
+    </td></tr>`;
+  }
+
+  body.innerHTML = html;
+}
+
+// DROPDOWNS
+function toggleDropdown(which) {
+  const menu = document.getElementById(which+'Menu');
+  const btn = document.getElementById(which+'Btn');
+  const isOpen = menu.classList.contains('show');
+  document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
+  document.querySelectorAll('.dropdown-btn').forEach(b => b.classList.remove('open'));
+  if (!isOpen) { menu.classList.add('show'); btn.classList.add('open'); }
+}
+
+function setSort(val, label) {
+  const proSorts = ['movers','undervalued','dividend'];
+  if (proSorts.includes(val) && !isPro) { openModal(); closeDropdowns(); return; }
+  currentSort = val;
+  document.getElementById('sortLabel').textContent = label;
+  document.querySelectorAll('#sortMenu .dropdown-item').forEach(i => i.classList.remove('active'));
+  event.target.classList.add('active');
+  closeDropdowns();
+  renderStocks();
+}
+
+function setSector(val, label) {
+  currentSector = val;
+  document.getElementById('sectorLabel').textContent = label;
+  document.querySelectorAll('#sectorMenu .dropdown-item').forEach(i => i.classList.remove('active'));
+  event.target.classList.add('active');
+  closeDropdowns();
+  renderStocks();
+}
+
+function closeDropdowns() {
+  document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
+  document.querySelectorAll('.dropdown-btn').forEach(b => b.classList.remove('open'));
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.dropdown-wrap')) closeDropdowns();
+});
+
+// MODAL
+function openModal() { document.getElementById('upgradeModal').classList.add('show'); }
+function closeModal() { document.getElementById('upgradeModal').classList.remove('show'); }
+document.getElementById('upgradeModal').addEventListener('click', e => { if(e.target===e.currentTarget) closeModal(); });
+
+function activatePro() {
+  isPro = true;
+  closeModal();
+  document.getElementById('planIndicator').innerHTML = '<span class="premium-badge">PRO</span>';
+  document.querySelector('.nav-plan').style.display = 'none';
+  document.getElementById('advisorLock').style.display = 'none';
+  document.getElementById('inputRow').style.display = 'flex';
+  renderStocks();
+}
+
+// AI ADVISOR
+async function sendQ() {
+  const input = document.getElementById('advisorInput');
+  const q = input.value.trim();
+  if (!q) return;
+
+  if (!isPro && questionsUsed >= FREE_Q_LIMIT) { openModal(); return; }
+
+  input.value = '';
+  addMsg(q, 'user');
+  document.getElementById('pillsRow').style.display = 'none';
+  const btn = document.getElementById('sendBtn');
+  btn.disabled = true; btn.textContent = '...';
+
+  addThinking();
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system:`You are Cash Flo AI, a stock market advisor embedded in a financial education website. Your users range from total beginners to intermediate investors.
+- Give thorough, genuinely helpful answers. At least 3-4 sentences, specific and clear.
+- Explain jargon in plain English.
+- Name real companies and real numbers when relevant.
+- Be honest about risk — never hype or guarantee returns.
+- Frame as education, not financial advice.
+- For specific stocks: give a balanced view — upside, downside, who it suits.
+- Keep a friendly, confident tone.`,
+        messages:[{role:'user',content:q}]
+      })
+    });
+    const data = await res.json();
+    removeThinking();
+    const text = data.content.map(b=>b.text||'').join('');
+    addMsg(text,'ai');
+    questionsUsed++;
+    if (!isPro && questionsUsed >= FREE_Q_LIMIT) {
+      document.getElementById('advisorLock').style.display = 'flex';
+      document.getElementById('inputRow').style.display = 'none';
+    }
+  } catch(e) {
+    removeThinking();
+    addMsg('Something went wrong — try again in a moment.','ai');
+  }
+  btn.disabled=false; btn.textContent='Ask →';
+}
+
+function addMsg(text, role) {
+  const area = document.getElementById('chatArea');
+  const d = document.createElement('div');
+  d.className = `msg${role==='user'?' user-msg':''}`;
+  d.innerHTML = `<div class="msg-av ${role==='ai'?'ai':'user'}">${role==='ai'?'CF':'You'}</div><div class="msg-bub">${text.replace(/\n/g,'<br>')}</div>`;
+  area.appendChild(d);
+  area.scrollTop = area.scrollHeight;
+}
+
+function addThinking() {
+  const area = document.getElementById('chatArea');
+  const d = document.createElement('div');
+  d.className='msg'; d.id='thinking';
+  d.innerHTML=`<div class="msg-av ai">CF</div><div class="msg-bub" style="color:var(--muted)"><span class="spin"></span></div>`;
+  area.appendChild(d); area.scrollTop=area.scrollHeight;
+}
+
+function removeThinking() {
+  const el = document.getElementById('thinking');
+  if(el) el.remove();
+}
+
+function askPill(btn) {
+  document.getElementById('advisorInput').value = btn.textContent;
+  sendQ();
+}
+
+document.getElementById('advisorInput').addEventListener('keydown', e => { if(e.key==='Enter') sendQ(); });
+
+// INIT
+renderStocks();
+</script>
+</body>
+</html>
