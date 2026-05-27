@@ -446,8 +446,10 @@ footer p{font-size:12px;color:var(--muted)}
         <p>🔒 <strong>Free plan:</strong> 3 questions used. Upgrade for unlimited AI advice.</p>
         <button class="unlock-btn" onclick="openModal()">Unlock Unlimited →</button>
       </div>
-      <div class="input-row" id="inputRow">
-        <input class="adv-input" id="advisorInput" placeholder="Ask about any stock or concept..." />
+<div class="input-row" id="inputRow">
+  <input class="adv-input" id="advisorInput" placeholder="Ask about any stock or concept..." />
+  <button class="send-btn" id="sendBtn" onclick="sendQ()">Ask →</button>
+</div>        <input class="adv-input" id="advisorInput" placeholder="Ask about any stock or concept..." />
         <button class="send-btn" id="sendBtn" onclick="sendQ(async function sendQ(function getCashFloAnswer(question) {
   const q = question.toLowerCase();
 
