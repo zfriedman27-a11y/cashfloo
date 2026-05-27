@@ -448,7 +448,36 @@ footer p{font-size:12px;color:var(--muted)}
       </div>
       <div class="input-row" id="inputRow">
         <input class="adv-input" id="advisorInput" placeholder="Ask about any stock or concept..." />
-        <button class="send-btn" id="sendBtn" onclick="sendQ()">Ask →</button>
+        <button class="send-btn" id="sendBtn" onclick="sendQ(async function sendQ() {
+  const input = document.getElementById('advisorInput');
+  const q = input.value.trim();
+  if (!q) return;
+
+  if (!isPro && questionsUsed >= FREE_Q_LIMIT) { 
+    openModal(); 
+    return; 
+  }
+
+  input.value = '';
+  addMsg(q, 'user');
+  document.getElementById('pillsRow').style.display = 'none';
+
+  addThinking();
+
+  setTimeout(() => {
+    removeThinking();
+
+    let answer = getCashFloAnswer(q);
+    addMsg(answer, 'ai');
+
+    questionsUsed++;
+
+    if (!isPro && questionsUsed >= FREE_Q_LIMIT) {
+      document.getElementById('advisorLock').style.display = 'flex';
+      document.getElementById('inputRow').style.display = 'none';
+    }
+  }, 800);
+})">Ask →</button>
       </div>
     </div>
   </div>
